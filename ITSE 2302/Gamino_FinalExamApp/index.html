@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tuxedo Cat Coffee</title>
+	<link type="text/css" rel="stylesheet" href="cafe.css">
+</head>
+
+<body>
+	<header>
+		<img src="images/logo.png" alt="Tuxedo Cat Coffee" />
+	</header>
+	<main>
+		<form id="order_form" name="order_form" action="checkout.html" method="get">
+			<section id="menu">
+				<h2>Menu</h2>
+				<p>Click an item to add it to your order.</p>
+				<ul>
+					<li><a href="#"><img id="images/espresso_info.jpg" src="images/espresso.jpg" alt="espresso" /></a>
+					</li>
+					<li><a href="#"><img id="images/latte_info.jpg" src="images/latte.jpg" alt="latte" /></a></li>
+					<li><a href="#"><img id="images/cappuccino_info.jpg" src="images/cappuccino.jpg"
+								alt="cappuccino" /></a></li>
+					<li><a href="#"><img id="images/coffee_info.jpg" src="images/coffee.jpg" alt="coffee" /></a></li>
+					<li><a href="#"><img id="images/biscotti_info.jpg" src="images/biscotti.jpg" alt="biscotti" /></a>
+					</li>
+					<li><a href="#"><img id="images/scone_info.jpg" src="images/scone.jpg" alt="scone" /></a></li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Your Order</h2>
+				<section>
+					<select id="order" name="order" size="6"></select>
+					<p id="total"></p>
+				</section>
+				<section id="buttons">
+					<p id="warning"></p> <!-- NEW LINE -->
+					<input type="button" name="place_order" id="place_order" value="Place Order">
+					<input type="button" name="clear_order" id="clear_order" value="Clear Order">
+				</section>
+			</section>
+		</form>
+	</main>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+	<script src="cafe.js"></script>
+
+	<!--JAVASCRIPT !!!!!!!!!-->
+	<script>
+		"use strict";
+
+		//objects
+		//info for the orders based on the info images
+		const menuItems = {
+			//name || money
+			espresso: 1.95,
+			latte: 2.95,
+			cappuccino: 3.45,
+			coffee: 1.75,
+			biscotti: 1.95,
+			scone: 2.95
+		};
+
+		let total = 0; //variable of final total = 0
+
+		//preload rollover images
+		const loadNewImages = () => {
+			for (let item in menuItems) {
+				const img = new Image();   //create new image object in memory
+				img.src = `images/${item}_info.jpg`; //set the source to the info image
+			}
+		};
+
+		//show info image on hover
+		const setupRollover = () => {
+			const menuImages = document.querySelectorAll("#menu img"); //get all menu item images
+			menuImages.forEach(img => {
+				const originalSrc = img.src; //save the original image source
+				const infoSrc = img.id;  //use the id as the info image source
+
+				//on hover, displaying info img
+				img.addEventListener("mouseover", () => {
+					img.src = infoSrc; 
+				});
+
+				//cursor is not in img, restore original img
+				img.addEventListener("mouseout", () => {
+					img.src = originalSrc;
+				});
+			});
+		};
+
+		//add item to order on click
+		const setupOrdering = () => {
+			const menuImages = document.querySelectorAll("#menu img"); 
+			const orderList = document.getElementById("order");  //the select element for order items
+			const totalDisplay = document.getElementById("total"); //the paragraph showing total
+
+			menuImages.forEach(img => {
+				img.addEventListener("click", () => {
+					const item = img.alt.toLowerCase(); //get item name form alt text
+					const price = menuItems[item]; //look up to the price in the object
+
+					//create a new option in the order list
+					const option = document.createElement("option");
+					option.textContent = `$${price.toFixed(2)} - ${item.charAt(0).toUpperCase() + item.slice(1)}`; //showing first price and later the name 
+					orderList.appendChild(option); //add the item to the order list
+
+					total += price; //adding the new price to the final total
+					totalDisplay.textContent = `Total: $${total.toFixed(2)}`; //displaying final total
+				});
+			});
+		};
+
+		//buttons
+		const setupButtons = () => {
+			const warning = document.getElementById("warning");
+
+			document.getElementById("place_order").addEventListener("click", () => {
+				if (total > 0) { //at least 1 item added
+					document.getElementById("order_form").submit(); //go to checkout.html
+				} else {
+					warning.textContent = "Please add items to your order."; //warning message
+					warning.style.display = "block";
+				}
+			});
+
+			//button clear order
+			document.getElementById("clear_order").addEventListener("click", () => {
+				//clears the list
+				document.getElementById("order").innerHTML = "";
+				document.getElementById("total").textContent = "";
+				total = 0; //reset total to 0
+			});
+		};
+
+		//initialize all functionality when page content is fully loaded
+		document.addEventListener("DOMContentLoaded", () => {
+			loadNewImages(); //pre load images to the page, make it more faster
+			setupRollover(); //activate the hover with the new images
+			setupOrdering(); //image/info to order list
+			setupButtons(); //button send or erase
+		});
+	</script>
+</body>
+
+</html>
