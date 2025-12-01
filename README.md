@@ -1,4 +1,5 @@
-Hello everybody, I am Luis Gamino 
+Hello everybody, I am Luis Gamino,
+
 Technology isn’t just my field of study—it’s my passion. From coding and software development to troubleshooting hardware issues, I thrive on solving complex problems and discovering new possibilities.
 
 I am currently pursuing a degree in Programming and Software Development at Navarro College, and I have earned certifications in Web Development (Frontend), Cybersecurity, and IT. My experience goes beyond coursework—I actively assist colleagues with hardware and software troubleshooting, fixing program errors, resolving technical questions, and repairing devices like printers, monitors, and peripherals. These hands-on experiences have strengthened my problem-solving skills and deepened my enthusiasm for IT.
